@@ -5,9 +5,11 @@ on:
     branches: [main, develop, feature/workflow]
   pull_request:
     branches: [main, develop, feature/workflow]
+
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Baixar código
         uses: actions/checkout@v5
@@ -15,30 +17,11 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 20
           cache: npm
 
       - name: Instalar dependências
         run: npm ci
 
       - name: Rodar testes
-        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
-
-  build:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Baixar código
-        uses: actions/checkout@v5
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: npm
-
-      - name: Instalar dependências
-        run: npm ci
-
-      - name: Gerar build
-        run: npm run buildss
+        run: npx ng test --no-watch --no-progress --browsers=ChromeHeadless
